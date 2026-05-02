@@ -67,7 +67,7 @@ async function run() {
     });
   });
 
-  // ✅ GET USER
+  // get user from database
   app.get("/me", async (req, res) => {
     const email = req.headers.email;
 
@@ -83,6 +83,35 @@ async function run() {
       photo: user.photo,
     });
   });
+
+  // google login
+  app.post("/google-login", async (req, res) => {
+  const { name, email, photo } = req.body;
+
+  let user = await userCollection.findOne({ email });
+
+  if (!user) {
+    const newUser = {
+      name,
+      email,
+      photo,
+      createdAt: new Date(),
+      provider: "google",
+    };
+
+    await userCollection.insertOne(newUser);
+    user = newUser;
+  }
+
+  res.send({
+    success: true,
+    user: {
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
+    },
+  });
+});
 }
 
 run().catch(console.dir);

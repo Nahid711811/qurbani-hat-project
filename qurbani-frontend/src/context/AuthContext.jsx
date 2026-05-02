@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { signOut } from "firebase/auth";
+import { auth } from "./firebase.init";
 
 export const AuthContext = createContext();
 
@@ -32,10 +34,11 @@ export default function AuthProvider({ children }) {
   }, []);
 
   // logout
-  const logout = () => {
-    setUser(null);
-    sessionStorage.removeItem("email");
-  };
+const logout = async () => {
+  await signOut(auth); // 🔥 logout firebase
+  setUser(null);
+  sessionStorage.removeItem("email");
+};
 
   return (
     <AuthContext.Provider value={{ user, setUser, loadUser, logout }}>

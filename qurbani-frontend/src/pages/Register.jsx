@@ -30,6 +30,35 @@ export default function Register() {
     }
   };
 
+const handleGoogleRegister = async ()=>{
+ try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+
+    const userData = {
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+    };
+
+    // send to backend
+    await axios.post("http://localhost:5000/google_login", userData);
+
+    // save session
+    sessionStorage.setItem("email", user.email);
+
+    // load user into context
+    await loadUser(user.email);
+
+    toast.success("Google login successful");
+    navigate("/");
+
+  } catch (err) {
+    console.log(err);
+    toast.error("Google login failed");
+  }
+}
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleRegister} className="p-6 bg-white shadow rounded w-96">
@@ -43,6 +72,10 @@ export default function Register() {
 
         <button className="w-full bg-green-500 text-white p-2">
           Register
+        </button>
+        <br />
+         <button onClick={handleGoogleRegister} className="w-full bg-green-500 text-white p-2">
+          Google Login
         </button>
 
         <p className="text-center mt-3 text-sm">

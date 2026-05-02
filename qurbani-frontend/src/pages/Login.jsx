@@ -35,6 +35,35 @@ export default function Login() {
   }
 };
 
+const handleGoogleLogin = async()=>{
+   try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+
+    const userData = {
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+    };
+
+    // send to backend
+    await axios.post("http://localhost:5000/google_login", userData);
+
+    // save session
+    sessionStorage.setItem("email", user.email);
+
+    // load user into context
+    await loadUser(user.email);
+
+    toast.success("Google login successful");
+    navigate("/");
+
+  } catch (err) {
+    console.log(err);
+    toast.error("Google login failed");
+  }
+}
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleLogin} className="p-6 w-96 shadow bg-white">
@@ -58,6 +87,10 @@ export default function Login() {
 
         <button className="w-full bg-blue-500 text-white p-2">
           Login
+        </button>
+        <br />
+         <button onClick={handleGoogleLogin} className="w-full bg-blue-500 text-white p-2">
+          Google Login
         </button>
 
         <p className="text-center mt-2">
