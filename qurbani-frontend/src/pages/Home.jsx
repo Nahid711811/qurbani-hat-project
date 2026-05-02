@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Banner from '../components/Banner'
 import {Link} from "react-router-dom"
+import Reviews from '../components/Reviews';
 
 export default function Home() {
      const [animals, setAnimals] = useState([]);
@@ -13,7 +14,7 @@ export default function Home() {
       .catch((err) => console.log(err));
   }, []);
   return (
-    <div>
+    <>
       <Banner />
 
 <div className='bg-white mt-20 p-2'>
@@ -59,6 +60,10 @@ export default function Home() {
   ))}
 </div>
 </div>
-    </div>
+
+<div className='mt-20'>
+  <Reviews />
+</div>
+    </>
   )
 }
