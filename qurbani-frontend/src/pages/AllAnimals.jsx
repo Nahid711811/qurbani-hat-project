@@ -38,7 +38,7 @@ export default function AllAnimals() {
   });
 
   return (
-    <div className="bg-white mt-20 p-2">
+    <div className="bg-white p-2">
       {/* HEADER + CONTROLS */}
       <div className="flex flex-col justify-start items-start md:flex-row md:justify-between md:items-center gap-4 mb-4">
         <div>

@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
-import Lottie from "lottie-react";
+import Lottie from "react-lottie-player";
+import loading from "../../public/loading.json";
 
 export default function Loader() {
-  const [animationData, setAnimationData] = useState(null);
 
-  useEffect(() => {
-    fetch("/loading.json")
-      .then((res) => res.json())
-      .then((data) => setAnimationData(data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  if (!animationData) {
+  if (!loading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <p>Loading...</p>
@@ -22,7 +15,7 @@ export default function Loader() {
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <Lottie
-        animationData={animationData}
+        animationData={loading}
         loop={true}
         style={{ width: 180, height: 180 }}
       />
