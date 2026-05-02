@@ -10,7 +10,7 @@ export default function Navbar({ user, handleLogout }) {
       <div className="flex gap-4 items-center">
 
         <Link to="/">Home</Link>
-        <Link to="/animals">Animals</Link>
+        <Link to="/all_animals">Animals</Link>
 
         {!user ? (
           <>
