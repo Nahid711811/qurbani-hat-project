@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -10,34 +15,63 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login Data:", form);
+
+    try {
+      const res = await axios.post("http://localhost:5000/login", form);
+
+      toast.success(res.data.message);
+
+      // ✅ DO NOT use localStorage (as you said)
+      navigate("/");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login failed");
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign-In Clicked");
+  const handleGoogle = () => {
+    toast("Google login not implemented yet (optional)");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+    <div className="min-h-screen flex items-center justify-center">
+      <form onSubmit={handleLogin} className="p-6 bg-white shadow rounded w-96">
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} className="w-full p-3 border rounded-lg" required />
+        <h2 className="text-xl font-bold mb-4">Login</h2>
 
-          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} className="w-full p-3 border rounded-lg" required />
+        <input
+          name="email"
+          placeholder="Email"
+          className="w-full border p-2 mb-3"
+          onChange={handleChange}
+        />
 
-          <button type="submit" className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">Login</button>
-        </form>
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          className="w-full border p-2 mb-3"
+          onChange={handleChange}
+        />
 
-        <button onClick={handleGoogleSignIn} className="w-full mt-4 bg-red-500 text-white py-3 rounded-lg hover:bg-red-600">Continue with Google</button>
+        <button className="w-full bg-blue-500 text-white p-2">
+          Login
+        </button>
 
-        <p className="text-center mt-4 text-sm">
-          Don't have an account? <a href="/register" className="text-blue-500 hover:underline">Register</a>
+        <button
+          type="button"
+          onClick={handleGoogle}
+          className="w-full bg-red-500 text-white p-2 mt-2"
+        >
+          Google Login
+        </button>
+
+        <p className="text-center mt-3 text-sm">
+          No account? <Link to="/register_user">Register</Link>
         </p>
-      </div>
+
+      </form>
     </div>
   );
 }

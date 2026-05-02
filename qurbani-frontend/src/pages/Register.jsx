@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -12,35 +17,39 @@ export default function Register() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("User Data:", form);
-  };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign-In Clicked");
+    try {
+      const res = await axios.post("http://localhost:5000/register", form);
+
+      toast.success(res.data.message);
+      navigate("/login_user");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Registration failed");
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+    <div className="min-h-screen flex items-center justify-center">
+      <form onSubmit={handleRegister} className="p-6 bg-white shadow rounded w-96">
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" name="name" placeholder="Name" value={form.name} onChange={handleChange} className="w-full p-3 border rounded-lg" required />
-          <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} className="w-full p-3 border rounded-lg" required />
-          <input type="text" name="photo" placeholder="Photo URL" value={form.photo} onChange={handleChange} className="w-full p-3 border rounded-lg" />
-          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} className="w-full p-3 border rounded-lg" required />
+        <h2 className="text-xl font-bold mb-4">Register</h2>
 
-          <button type="submit" className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">Register</button>
-        </form>
+        <input name="name" placeholder="Name" className="w-full border p-2 mb-2" onChange={handleChange} />
+        <input name="email" placeholder="Email" className="w-full border p-2 mb-2" onChange={handleChange} />
+        <input name="photo" placeholder="Photo URL" className="w-full border p-2 mb-2" onChange={handleChange} />
+        <input name="password" type="password" placeholder="Password" className="w-full border p-2 mb-2" onChange={handleChange} />
 
-        <button onClick={handleGoogleSignIn} className="w-full mt-4 bg-red-500 text-white py-3 rounded-lg hover:bg-red-600">Continue with Google</button>
+        <button className="w-full bg-green-500 text-white p-2">
+          Register
+        </button>
 
-        <p className="text-center mt-4 text-sm">
-          Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a>
+        <p className="text-center mt-3 text-sm">
+          Already have account? <Link to="/login_user">Login</Link>
         </p>
-      </div>
+
+      </form>
     </div>
   );
 }
