@@ -5,6 +5,8 @@ import Home from "../pages/Home"
 import Login from "../pages/Login"
 import Register from "../pages/Register"
 import AllAnimals from "../pages/AllAnimals";
+import MyProfile from "../pages/MyProfile";
+import UpdateProfile from "../components/UpdateProfile";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +28,16 @@ const router = createBrowserRouter([
       {
         path:"/all_animals",
         element:<AllAnimals />
+      },
+      {
+        path:"/my_profile",
+        element:<MyProfile />
+      },
+      {
+        path:"/update_profile",
+        element:<UpdateProfile />
       }
+
     ],
   },
 ]);

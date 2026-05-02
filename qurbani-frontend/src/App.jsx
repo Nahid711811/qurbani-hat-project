@@ -6,7 +6,7 @@ import { AuthContext } from "./context/AuthContext";
 
 export default function App() {
   const { user, logout } = useContext(AuthContext);
-  console.log("user", user)
+  // console.log("user", user)
 
   return (
     <>

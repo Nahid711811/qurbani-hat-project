@@ -67,6 +67,52 @@ async function run() {
     });
   });
 
+  app.get("/user/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const user = await userCollection.findOne({ email });
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.send({
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
+    });
+  } catch (error) {
+    res.status(500).send({ message: "Server error" });
+  }
+});
+
+  // ✅ UPDATE USER PROFILE (name + photo only)
+app.put("/user/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const { name, photo } = req.body;
+
+    const result = await userCollection.updateOne(
+      { email },
+      {
+        $set: { name, photo },
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.send({
+      success: true,
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    res.status(500).send({ message: "Server error" });
+  }
+});
+
   // get user from database
   app.get("/me", async (req, res) => {
     const email = req.headers.email;
