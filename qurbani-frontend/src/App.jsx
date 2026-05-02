@@ -1,28 +1,22 @@
-import Footer from "./components/Footer"
-import Navbar from "./components/Navbar"
-import { Outlet } from "react-router-dom"
+import { useContext } from "react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import { Outlet } from "react-router-dom";
+import { AuthContext } from "./context/AuthContext";
 
-function App() {
- const user = null; 
-   const handleLogout = () => {
-    console.log("Logout clicked");
-  };
+export default function App() {
+  const { user, logout } = useContext(AuthContext);
+  console.log("user", user)
+
   return (
     <>
-    <header>
-     <Navbar user={user} handleLogout={handleLogout} />
-    </header>
+      <Navbar user={user} handleLogout={logout} />
 
-    <main>
-      <Outlet />
-    </main>
+      <main>
+        <Outlet />
+      </main>
 
-    <footer>
       <Footer />
-    </footer>
-
     </>
-  )
-}
-
-export default App
+  );
+} 

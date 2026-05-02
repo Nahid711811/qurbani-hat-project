@@ -3,6 +3,8 @@ import Banner from '../components/Banner'
 
 export default function Home() {
      const [animals, setAnimals] = useState([]);
+    //  const aniFil = filter(ani=>ani.cow == "cow")
+    //  console.log("anifil", anifil)
 
   useEffect(() => {
     fetch("/animals.json")

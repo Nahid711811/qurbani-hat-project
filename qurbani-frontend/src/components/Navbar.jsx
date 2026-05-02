@@ -1,59 +1,38 @@
 import { Link } from "react-router-dom";
 
 export default function Navbar({ user, handleLogout }) {
+    console.log("User", user)
   return (
-    <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-      
-      {/* Left - Title */}
-      <div className="text-2xl font-bold text-blue-600">
-        MyApp
-      </div>
+    <nav className="flex justify-between p-4 shadow bg-white">
 
-      {/* Right - Menu */}
-      <div className="flex items-center gap-4">
-        
-        <Link to="/" className="hover:text-blue-500">
-          Home
-        </Link>
+      <h1 className="text-xl font-bold">Qurbani Hat</h1>
 
-        <Link to="/animals" className="hover:text-blue-500">
-          All Animals
-        </Link>
+      <div className="flex gap-4 items-center">
 
-        {/* Conditional Rendering */}
+        <Link to="/">Home</Link>
+        <Link to="/animals">Animals</Link>
+
         {!user ? (
           <>
-            <Link to="/login_user">
-              <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">
-                Login
-              </button>
-            </Link>
-
-            <Link to="/register_user">
-              <button className="px-4 py-2 bg-green-500 text-white rounded-lg">
-                Register
-              </button>
-            </Link>
+            <Link to="/login_user">Login</Link>
+            <Link to="/register_user">Register</Link>
           </>
         ) : (
-          <div className="flex items-center gap-3">
-            
-            {/* Avatar */}
+          <>
             <img
-              src={user.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
-              alt="user"
-              className="w-10 h-10 rounded-full border"
+              src={user?.photo}
+              className="w-10 h-10 rounded-full"
             />
 
-            {/* Logout */}
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-red-500 text-white rounded-lg"
+              className="bg-red-500 text-white px-3 py-1"
             >
               Logout
             </button>
-          </div>
+          </>
         )}
+
       </div>
     </nav>
   );

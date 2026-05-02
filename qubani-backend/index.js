@@ -2,11 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const app = express();
-const port = process.env.PORT || 3000;
-
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -22,79 +21,72 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
+  await client.connect();
+
   const userCollection = client.db("qurbanihat").collection("users");
 
-  // ✅ REGISTER API
+  // ✅ REGISTER
   app.post("/register", async (req, res) => {
-    try {
-      const { name, email, photo, password } = req.body;
+    const { name, email, photo, password } = req.body;
 
-      const existingUser = await userCollection.findOne({ email });
+    const exists = await userCollection.findOne({ email });
+    if (exists) return res.status(400).send({ message: "User exists" });
 
-      if (existingUser) {
-        return res.status(400).send({ message: "User already exists" });
-      }
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+    const user = {
+      name,
+      email,
+      photo,
+      password: hashedPassword,
+      createdAt: new Date(),
+    };
 
-      const user = {
-        name,
-        email,
-        photo,
-        password: hashedPassword,
-        createdAt: new Date(),
-      };
+    await userCollection.insertOne(user);
 
-      const result = await userCollection.insertOne(user);
-
-      res.send({
-        success: true,
-        message: "User registered successfully",
-        insertedId: result.insertedId,
-      });
-    } catch (error) {
-      res.status(500).send({ message: error.message });
-    }
+    res.send({ success: true, message: "Registered successfully" });
   });
 
-  // ✅ LOGIN API
+  // ✅ LOGIN
   app.post("/login", async (req, res) => {
-    try {
-      const { email, password } = req.body;
+    const { email, password } = req.body;
 
-      const user = await userCollection.findOne({ email });
+    const user = await userCollection.findOne({ email });
+    if (!user) return res.status(404).send({ message: "User not found" });
 
-      if (!user) {
-        return res.status(404).send({ message: "User not found" });
-      }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(401).send({ message: "Wrong password" });
 
-      const isMatch = await bcrypt.compare(password, user.password);
+    res.send({
+      success: true,
+      user: {
+        name: user.name,
+        email: user.email,
+        photo: user.photo,
+      },
+    });
+  });
 
-      if (!isMatch) {
-        return res.status(401).send({ message: "Invalid credentials" });
-      }
+  // ✅ GET USER
+  app.get("/me", async (req, res) => {
+    const email = req.headers.email;
 
-      res.send({
-        success: true,
-        message: "Login successful",
-        user: {
-          name: user.name,
-          email: user.email,
-          photo: user.photo,
-        },
-      });
-    } catch (error) {
-      res.status(500).send({ message: error.message });
-    }
+    if (!email) return res.status(401).send({ message: "No email" });
+
+    const user = await userCollection.findOne({ email });
+
+    if (!user) return res.status(404).send({ message: "No user found" });
+
+    res.send({
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
+    });
   });
 }
 
 run().catch(console.dir);
 
-app.get("/", (req, res) => {
-  res.send("qurbani hat is running");
-});
+app.get("/", (req, res) => console.log("Server running"));
 
-app.listen(port, () => {
-  console.log(`qurbani hat is running on port ${port}`);
-});
+app.listen(port, () => console.log("Running on", port));
