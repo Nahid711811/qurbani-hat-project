@@ -2,8 +2,13 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../context/firebase.init";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Register() {
+  const { loadUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -30,8 +35,10 @@ export default function Register() {
     }
   };
 
-const handleGoogleRegister = async ()=>{
- try {
+const handleGoogleRegister = async (e) => {
+  e.preventDefault(); // 🔥 important
+
+  try {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
 
@@ -41,13 +48,13 @@ const handleGoogleRegister = async ()=>{
       photo: user.photoURL,
     };
 
-    // send to backend
+    // ✅ correct route
     await axios.post("http://localhost:5000/google_login", userData);
 
     // save session
     sessionStorage.setItem("email", user.email);
 
-    // load user into context
+    // load user
     await loadUser(user.email);
 
     toast.success("Google login successful");
@@ -57,7 +64,7 @@ const handleGoogleRegister = async ()=>{
     console.log(err);
     toast.error("Google login failed");
   }
-}
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -74,7 +81,8 @@ const handleGoogleRegister = async ()=>{
           Register
         </button>
         <br />
-         <button onClick={handleGoogleRegister} className="w-full bg-green-500 text-white p-2">
+        <br />
+         <button type="button" onClick={handleGoogleRegister} className="w-full bg-yellow-500 text-white p-2">
           Google Login
         </button>
 

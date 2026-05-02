@@ -85,7 +85,7 @@ async function run() {
   });
 
   // google login
-  app.post("/google-login", async (req, res) => {
+  app.post("/google_login", async (req, res) => {
   const { name, email, photo } = req.body;
 
   let user = await userCollection.findOne({ email });
