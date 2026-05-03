@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function UpdateProfile() {
   const [form, setForm] = useState({
@@ -33,10 +34,10 @@ export default function UpdateProfile() {
     try {
       await axios.put(`http://localhost:5000/user/${email}`, form);
 
-      alert("Profile updated successfully");
+      toast.success("Profile updated successfully");
       navigate("/my_profile");
     } catch (err) {
-      alert("Update failed");
+      toast.error("Update failed");
     }
   };
 

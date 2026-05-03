@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar({ user, handleLogout }) {
   return (
-    <nav className="rounded-b-md flex justify-between p-1 md:p-4 shadow bg-[#468432] text-white">
+    <nav className="rounded-b-md flex justify-between py-3 md:py-4 p-1 md:p-4 shadow bg-[#468432] text-white">
       <Link to={"/"}>
         <div className="text-xl md:text-2xl font-bold tracking-wide">
           <span className="text-[#FFA02E]">Qurbani</span>Hat

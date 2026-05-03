@@ -6,39 +6,35 @@ import { auth } from "./firebase.init";
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // load user from backend
   const loadUser = async (email) => {
     try {
       const res = await axios.get("http://localhost:5000/me", {
         headers: { email },
       });
-
       setUser(res.data);
     } catch (err) {
       setUser(null);
-    } finally {
-      setLoading(false);
     }
   };
 
-  // auto login on refresh
   useEffect(() => {
     const email = sessionStorage.getItem("email");
 
-    if (!email) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
+    const initAuth = async () => {
+      if (email) {
+        await loadUser(email);
+      } else {
+        setUser(null);
+      }
+      setLoading(false); 
+    };
 
-    loadUser(email);
+    initAuth();
   }, []);
 
-  // logout
   const logout = async () => {
     await signOut(auth);
     setUser(null);

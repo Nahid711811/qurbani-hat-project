@@ -139,9 +139,12 @@ export default function AllAnimals() {
             <div className="flex justify-between items-center">
               <p className="font-bold text-[#FFA02E]">৳{animal.price}</p>
 
-              <button className="bg-[#468432] font-bold p-2 rounded-xl text-white">
+              <Link
+                to={`/animal/${animal.id}`}
+                className="bg-[#468432] font-bold p-2 rounded-xl text-white text-center"
+              >
                 Details
-              </button>
+              </Link>
             </div>
           </div>
         ))}
