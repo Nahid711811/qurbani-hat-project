@@ -25,7 +25,7 @@ async function run() {
 
   const userCollection = client.db("qurbanihat").collection("users");
 
-  // ✅ REGISTER
+  // REGISTER
   app.post("/register", async (req, res) => {
     const { name, email, photo, password } = req.body;
 
@@ -47,7 +47,7 @@ async function run() {
     res.send({ success: true, message: "Registered successfully" });
   });
 
-  // ✅ LOGIN
+  // LOGIN
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -87,7 +87,7 @@ async function run() {
   }
 });
 
-  // ✅ UPDATE USER PROFILE (name + photo only)
+  // UPDATE USER PROFILE (name + photo only)
 app.put("/user/:email", async (req, res) => {
   try {
     const email = req.params.email;

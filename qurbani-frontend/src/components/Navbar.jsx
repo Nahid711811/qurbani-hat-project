@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar({ user, handleLogout }) {
-  // console.log("User", user)
   return (
     <nav className="rounded-b-md flex justify-between p-1 md:p-4 shadow bg-[#468432] text-white">
       <Link to={"/"}>
@@ -11,27 +10,56 @@ export default function Navbar({ user, handleLogout }) {
       </Link>
 
       <div className="flex gap-2 md:gap-4 items-center">
-        <Link className="hover:text-[#FFA02E]" to="/">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "text-[#FFA02E]" : "hover:text-[#FFA02E]"
+          }
+        >
           Home
-        </Link>
-        <Link className="hover:text-[#FFA02E]" to="/all_animals">
+        </NavLink>
+
+        <NavLink
+          to="/all_animals"
+          className={({ isActive }) =>
+            isActive ? "text-[#FFA02E]" : "hover:text-[#FFA02E]"
+          }
+        >
           Animals
-        </Link>
+        </NavLink>
 
         {!user ? (
           <>
-            <Link className="hover:text-[#FFA02E]" to="/login_user">
+            <NavLink
+              to="/login_user"
+              className={({ isActive }) =>
+                isActive ? "text-[#FFA02E]" : "hover:text-[#FFA02E]"
+              }
+            >
               Login
-            </Link>
-            <Link className="hover:text-[#FFA02E]" to="/register_user">
+            </NavLink>
+
+            <NavLink
+              to="/register_user"
+              className={({ isActive }) =>
+                isActive ? "text-[#FFA02E]" : "hover:text-[#FFA02E]"
+              }
+            >
               Register
-            </Link>
+            </NavLink>
           </>
         ) : (
           <>
-            <Link to="my_profile">
-              <img src={user?.photo} className="w-10 h-10 rounded-full" />
-            </Link>
+            <NavLink to="my_profile">
+              {({ isActive }) => (
+                <img
+                  src={user?.photo}
+                  className={`w-10 h-10 rounded-full ${
+                    isActive ? "ring-2 ring-[#FFA02E]" : ""
+                  }`}
+                />
+              )}
+            </NavLink>
 
             <button
               onClick={handleLogout}

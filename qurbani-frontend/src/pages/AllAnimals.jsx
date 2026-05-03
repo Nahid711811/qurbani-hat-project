@@ -27,12 +27,10 @@ export default function AllAnimals() {
     return <Loader />;
   }
 
-  // ✅ STEP 1: filter first
   const filteredAnimals = animals.filter((ani) =>
     filterType === "all" ? true : ani.type.toLowerCase() === filterType,
   );
 
-  // ✅ STEP 2: then sort filtered data
   const sortedAnimals = [...filteredAnimals].sort((a, b) => {
     return sortOrder === "lowToHigh" ? a.price - b.price : b.price - a.price;
   });
