@@ -99,23 +99,6 @@ export default function ReviewsSlider() {
           </motion.div>
         </AnimatePresence>
       </div>
-
-      {/* Buttons */}
-      {/* <div className="flex justify-center gap-4 mt-6">
-        <button
-          onClick={handlePrev}
-          className="px-4 py-2 bg-gray-800 text-white rounded-lg"
-        >
-          Prev
-        </button>
-
-        <button
-          onClick={handleNext}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg"
-        >
-          Next
-        </button>
-      </div> */}
     </div>
   );
 }

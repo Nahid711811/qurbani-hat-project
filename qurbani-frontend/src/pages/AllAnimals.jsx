@@ -113,38 +113,41 @@ export default function AllAnimals() {
         {sortedAnimals?.map((animal) => (
           <div
             key={animal.id}
-            className="border border-[#468432] p-4 rounded-lg shadow flex flex-col gap-2 hover:shadow-lg"
+            className="border border-[#468432] rounded-lg shadow flex flex-col gap-2 text-md hover:shadow-lg"
           >
-            <img
-              src={animal.image}
-              alt={animal.name}
-              className="w-full h-40 object-cover rounded"
-            />
-
-            <div className="flex justify-between items-center">
-              <p className="text-sm text-white py-1 px-2 rounded-2xl bg-[#468432]">
-                {animal.type}
-              </p>
-              <p className="text-sm py-1 px-2 rounded-2xl bg-[#FFA02E]">
-                {animal.breed}
-              </p>
+            <div>
+              <img
+                src={animal.image}
+                alt={animal.name}
+                className="w-full h-40 object-cover rounded"
+              />
             </div>
-
-            <h3 className="text-lg font-bold text-[#468432]">{animal.name}</h3>
-
-            <p>Weight: {animal.weight} kg</p>
-            <p>Age: {animal.age} years</p>
-            <p>Location: {animal.location}</p>
-
-            <div className="flex justify-between items-center">
-              <p className="font-bold text-[#FFA02E]">৳{animal.price}</p>
-
-              <Link
-                to={`/animal/${animal.id}`}
-                className="bg-[#468432] font-bold p-2 rounded-xl text-white text-center"
-              >
-                Details
-              </Link>
+            <div className="p-2">
+              <div className="flex justify-between gap-4 items-center">
+                <p className="text-sm text-white py-1 px-2 rounded-2xl bg-[#468432]">
+                  {animal.type}
+                </p>
+                <p className="text-sm py-1 px-2 rounded-2xl bg-[#FFA02E]">
+                  {animal.breed}
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-[#468432]">
+                  {animal.name}
+                </h3>
+                <p>Weight: {animal.weight} kg</p>
+                <p>Age: {animal.age} years</p>
+                <p>Location: {animal.location}</p>
+              </div>
+              <div className="flex justify-between gap-4 items-center">
+                <p className="font-bold text-[#FFA02E]">৳{animal.price}</p>
+                <Link
+                  to={`/animal/${animal.id}`}
+                  className="bg-[#468432] font-bold p-2 rounded-xl text-white text-center"
+                >
+                  Details
+                </Link>
+              </div>
             </div>
           </div>
         ))}

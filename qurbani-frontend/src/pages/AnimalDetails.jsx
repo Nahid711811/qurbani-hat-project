@@ -55,7 +55,7 @@ export default function AnimalDetails() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 border border-[#468432] rounded-md my-1">
-      <img src={animal.image} className="w-full h-64 object-cover rounded" />
+      <img src={animal.image} className="w-full h-64 object-contain rounded-md" />
 
       <h2 className="text-2xl font-bold mt-4">{animal.name}</h2>
       <p>Type: {animal.type}</p>

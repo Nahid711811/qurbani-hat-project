@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")).render(
       <div className="max-w-[425px] md:max-w-[768px] lg:max-w-[1024px] mx-auto">
         <RouterProvider router={router} />
       </div>
-      <ToastContainer position="top-center" pauseOnHover />
+      <ToastContainer position="top-center" pauseOnHover style={{ zIndex: 99999 }} />
     </AuthProvider>
   </StrictMode>
 );
