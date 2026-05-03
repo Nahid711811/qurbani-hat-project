@@ -28,29 +28,35 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value.trim(),
+    });
   };
 
- const handleLogin = async (e) => {
-  e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  if (!form.email || !form.password) {
-    toast.error("Email and password are required");
-    return;
-  }
+    if (!form.email || !form.password) {
+      toast.error("Email and password are required");
+      return;
+    }
 
-  try {
-    const res = await axios.post("https://qubani-backend.vercel.app/login", form);
+    try {
+      const res = await axios.post(
+        "https://qubani-backend.vercel.app/login",
+        form,
+      );
 
-    sessionStorage.setItem("email", res.data.user.email);
-    await loadUser(res.data.user.email);
+      sessionStorage.setItem("email", res.data.user.email);
+      await loadUser(res.data.user.email);
 
-    toast.success("Login successful");
-    navigate("/");
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Login failed");
-  }
-};
+      toast.success("Login successful");
+      navigate("/");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login failed");
+    }
+  };
 
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
@@ -65,7 +71,10 @@ export default function Login() {
         photo: user.photoURL,
       };
 
-      await axios.post("https://qubani-backend.vercel.app/google_login", userData);
+      await axios.post(
+        "https://qubani-backend.vercel.app/google_login",
+        userData,
+      );
 
       sessionStorage.setItem("email", user.email);
       await loadUser(user.email);
@@ -73,24 +82,27 @@ export default function Login() {
       toast.success("Google login successful");
       navigate("/");
     } catch (err) {
-      toast.error("Google login failed");
+      const msg = err.response?.data?.message;
+
+      if (msg === "Use Google login") {
+        toast.error("This account uses Google login");
+      } else {
+        toast.error(msg || "Login failed");
+      }
     }
   };
 
   return (
     <div className="pt-5 md:pt-0 min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 px-4 gap-10">
-
       <ToastContainer position="top-center" autoClose={3000} />
 
       {/* Form Card */}
       <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8">
-
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">
           Welcome Back 👋
         </h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
-
           <input
             name="email"
             onChange={handleChange}

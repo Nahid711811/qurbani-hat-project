@@ -30,26 +30,32 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value.trim(),
+    });
   };
 
- const handleRegister = async (e) => {
-  e.preventDefault();
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-  if (!form.name || !form.email || !form.photo || !form.password) {
-    toast.error("All fields are required");
-    return;
-  }
+    if (!form.name || !form.email || !form.photo || !form.password) {
+      toast.error("All fields are required");
+      return;
+    }
 
-  try {
-    const res = await axios.post("https://qubani-backend.vercel.app/register", form);
+    try {
+      const res = await axios.post(
+        "https://qubani-backend.vercel.app/register",
+        form,
+      );
 
-    toast.success(res.data.message);
-    navigate("/login_user");
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Registration failed");
-  }
-};
+      toast.success(res.data.message);
+      navigate("/login_user");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Registration failed");
+    }
+  };
 
   const handleGoogleRegister = async (e) => {
     e.preventDefault();
@@ -64,32 +70,33 @@ export default function Register() {
         photo: user.photoURL,
       };
 
-      await axios.post("https://qubani-backend.vercel.app/google_login", userData);
+      await axios.post(
+        "https://qubani-backend.vercel.app/google_login",
+        userData,
+      );
 
       sessionStorage.setItem("email", user.email);
       await loadUser(user.email);
 
-      toast.success("Google login successful"); 
+      toast.success("Google login successful");
       navigate("/");
     } catch (err) {
-      toast.error("Google login failed"); 
+      // console.error("GOOGLE ERROR:", err);
+      toast.error(err.message || "Google login failed");
     }
   };
 
   return (
     <div className="pt-5 md:pt-0 min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-green-50 to-blue-100 px-4 gap-10">
-
       <ToastContainer position="top-center" autoClose={3000} />
 
       {/* FORM */}
       <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8">
-
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">
           Create Account 🚀
         </h2>
 
         <form onSubmit={handleRegister} className="space-y-4">
-
           <input
             name="name"
             placeholder="Name"
