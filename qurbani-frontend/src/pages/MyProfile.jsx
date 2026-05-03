@@ -10,7 +10,7 @@ export default function MyProfile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`http://localhost:5000/user/${email}`);
+      const res = await axios.get(`https://qubani-backend.vercel.app/user/${email}`);
       setUser(res.data);
     };
 

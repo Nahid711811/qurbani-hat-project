@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-  await client.connect();
+  // await client.connect();
 
   const userCollection = client.db("qurbanihat").collection("users");
 
@@ -162,6 +162,6 @@ app.put("/user/:email", async (req, res) => {
 
 run().catch(console.dir);
 
-app.get("/", (req, res) => console.log("Server running"));
+app.get("/", (req, res) => res.send("Server running"));
 
 app.listen(port, () => console.log("Running on", port));

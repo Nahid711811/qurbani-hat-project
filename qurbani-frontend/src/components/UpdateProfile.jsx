@@ -14,7 +14,7 @@ export default function UpdateProfile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`http://localhost:5000/user/${email}`);
+      const res = await axios.get(`https://qubani-backend.vercel.app/user/${email}`);
       setForm({
         name: res.data.name,
         photo: res.data.photo,
@@ -32,7 +32,7 @@ export default function UpdateProfile() {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:5000/user/${email}`, form);
+      await axios.put(`https://qubani-backend.vercel.app/user/${email}`, form);
 
       toast.success("Profile updated successfully");
       navigate("/my_profile");

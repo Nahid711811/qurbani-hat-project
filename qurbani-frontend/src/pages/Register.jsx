@@ -42,7 +42,7 @@ export default function Register() {
   }
 
   try {
-    const res = await axios.post("http://localhost:5000/register", form);
+    const res = await axios.post("https://qubani-backend.vercel.app/register", form);
 
     toast.success(res.data.message);
     navigate("/login_user");
@@ -64,7 +64,7 @@ export default function Register() {
         photo: user.photoURL,
       };
 
-      await axios.post("http://localhost:5000/google_login", userData);
+      await axios.post("https://qubani-backend.vercel.app/google_login", userData);
 
       sessionStorage.setItem("email", user.email);
       await loadUser(user.email);

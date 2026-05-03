@@ -40,7 +40,7 @@ export default function Login() {
   }
 
   try {
-    const res = await axios.post("http://localhost:5000/login", form);
+    const res = await axios.post("https://qubani-backend.vercel.app/login", form);
 
     sessionStorage.setItem("email", res.data.user.email);
     await loadUser(res.data.user.email);
@@ -65,7 +65,7 @@ export default function Login() {
         photo: user.photoURL,
       };
 
-      await axios.post("http://localhost:5000/google_login", userData);
+      await axios.post("https://qubani-backend.vercel.app/google_login", userData);
 
       sessionStorage.setItem("email", user.email);
       await loadUser(user.email);

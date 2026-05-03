@@ -11,7 +11,7 @@ export default function AuthProvider({ children }) {
 
   const loadUser = async (email) => {
     try {
-      const res = await axios.get("http://localhost:5000/me", {
+      const res = await axios.get("https://qubani-backend.vercel.app/me", {
         headers: { email },
       });
       setUser(res.data);
